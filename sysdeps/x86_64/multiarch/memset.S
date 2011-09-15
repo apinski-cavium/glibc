@@ -26,6 +26,9 @@
 ENTRY(memset)
 	.type	memset, @gnu_indirect_function
 	LOAD_RTLD_GLOBAL_RO_RDX
+	leaq	__memset_erms(%rip), %rax
+	HAS_ARCH_FEATURE (Fast_ERMS)
+	jnz	2f
 	leaq	__memset_sse2(%rip), %rax
 	HAS_ARCH_FEATURE (AVX2_Usable)
 	jz	2f

@@ -35,6 +35,7 @@
 extern __typeof (__redirect_memmove) __memmove_sse2 attribute_hidden;
 extern __typeof (__redirect_memmove) __memmove_ssse3 attribute_hidden;
 extern __typeof (__redirect_memmove) __memmove_ssse3_back attribute_hidden;
+extern __typeof (__redirect_memmove) __memmove_erms attribute_hidden;
 extern __typeof (__redirect_memmove) __memmove_avx_unaligned attribute_hidden;
 # ifdef HAVE_AVX512_ASM_SUPPORT
   extern __typeof (__redirect_memmove) __memmove_avx512_no_vzeroupper attribute_hidden;
@@ -52,6 +53,9 @@ extern __typeof (__redirect_memmove) __memmove_avx_unaligned attribute_hidden;
    ifunc symbol properly.  */
 extern __typeof (__redirect_memmove) __libc_memmove;
 libc_ifunc (__libc_memmove,
+	    HAS_ARCH_FEATURE (Fast_ERMS)
+	    ? __memmove_erms
+	    : (
 #ifdef HAVE_AVX512_ASM_SUPPORT
 	    HAS_ARCH_FEATURE (AVX512F_Usable)
 	      && HAS_ARCH_FEATURE (Prefer_No_VZEROUPPER)
@@ -63,7 +67,7 @@ libc_ifunc (__libc_memmove,
 	    : (HAS_CPU_FEATURE (SSSE3)
 	       ? (HAS_ARCH_FEATURE (Fast_Copy_Backward)
 	          ? __memmove_ssse3_back : __memmove_ssse3)
-	       : __memmove_sse2)));
+	       : __memmove_sse2))));
 
 strong_alias (__libc_memmove, memmove)
 
