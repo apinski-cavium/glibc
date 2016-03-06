@@ -133,6 +133,9 @@ lose:									      \
 /* Threshold to use Enhanced REP STOSB.  */
 #define REP_STOSB_THRESHOLD	1024
 
+/* Threshold to use Enhanced REP MOVSB.  */
+#define REP_MOVSB_THRESHOLD	2048
+
 #else	/* __ASSEMBLER__ */
 
 /* Long and pointer size in bytes.  */
