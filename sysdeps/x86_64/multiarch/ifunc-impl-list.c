@@ -89,6 +89,8 @@ __libc_ifunc_impl_list (const char *name, struct libc_ifunc_impl *array,
 	      IFUNC_IMPL_ADD (array, i, __memset_chk, 1,
 			      __memset_chk_sse2)
 	      IFUNC_IMPL_ADD (array, i, __memset_chk, 1,
+			      __memset_chk_sse2_erms)
+	      IFUNC_IMPL_ADD (array, i, __memset_chk, 1,
 			      __memset_chk_erms)
 	      IFUNC_IMPL_ADD (array, i, __memset_chk,
 			      HAS_ARCH_FEATURE (AVX2_Usable),
@@ -103,6 +105,7 @@ __libc_ifunc_impl_list (const char *name, struct libc_ifunc_impl *array,
   /* Support sysdeps/x86_64/multiarch/memset.S.  */
   IFUNC_IMPL (i, name, memset,
 	      IFUNC_IMPL_ADD (array, i, memset, 1, __memset_sse2)
+	      IFUNC_IMPL_ADD (array, i, memset, 1, __memset_sse2_erms)
 	      IFUNC_IMPL_ADD (array, i, memset, 1, __memset_erms)
 	      IFUNC_IMPL_ADD (array, i, memset,
 			      HAS_ARCH_FEATURE (AVX2_Usable),

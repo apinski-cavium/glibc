@@ -42,6 +42,26 @@ ENTRY(__memset_tail)
 END(__memset_tail)
 #endif
 
+#ifdef USE_MULTIARCH
+# if defined PIC && IS_IN (libc)
+ENTRY_CHK (__memset_chk_sse2_erms)
+	cmpq	%rdx, %rcx
+	jb	HIDDEN_JUMPTARGET (__chk_fail)
+END_CHK (__memset_chk_sse2_erms)
+# endif
+
+ENTRY (__memset_sse2_erms)
+	cmpq	$REP_STOSB_THRESHOLD, %rdx
+	jbe	L(memset_entry)
+	movq	%rdx, %rcx
+	movzbl	%sil, %eax
+	movq	%rdi, %rdx
+	rep stosb
+	movq	%rdx, %rax
+	ret
+END (__memset_sse2_erms)
+#endif
+
 #if defined PIC && IS_IN (libc)
 ENTRY_CHK (__memset_chk)
 	cmpq	%rdx, %rcx
@@ -50,6 +70,7 @@ END_CHK (__memset_chk)
 #endif
 
 ENTRY (memset)
+L(memset_entry):
 	movd	%esi, %xmm0
 	movq	%rdi, %rax
 	punpcklbw	%xmm0, %xmm0

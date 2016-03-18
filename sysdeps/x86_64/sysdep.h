@@ -130,6 +130,9 @@ lose:									      \
 #define R14_LP	r14
 #define R15_LP	r15
 
+/* Threshold to use Enhanced REP STOSB.  */
+#define REP_STOSB_THRESHOLD	1024
+
 #else	/* __ASSEMBLER__ */
 
 /* Long and pointer size in bytes.  */
