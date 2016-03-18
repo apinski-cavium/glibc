@@ -28,6 +28,24 @@
 
 	.section .text.avx2,"ax",@progbits
 #if defined PIC
+ENTRY_CHK (__memset_chk_avx2_erms)
+	cmpq	%rdx, %rcx
+	jb	HIDDEN_JUMPTARGET (__chk_fail)
+END_CHK (__memset_chk_avx2_erms)
+# endif
+
+ENTRY (__memset_avx2_erms)
+	cmpq	$REP_STOSB_THRESHOLD, %rdx
+	jbe	L(start)
+	movq	%rdx, %rcx
+	movzbl	%sil, %eax
+	movq	%rdi, %rdx
+	rep stosb
+	movq	%rdx, %rax
+	ret
+END (__memset_avx2_erms)
+
+#if defined PIC
 ENTRY (MEMSET_CHK)
 	cmpq	%rdx, %rcx
 	jb	HIDDEN_JUMPTARGET (__chk_fail)
@@ -35,6 +53,7 @@ END (MEMSET_CHK)
 #endif
 
 ENTRY (MEMSET)
+L(start):
 	vpxor	%xmm0, %xmm0, %xmm0
 	vmovd	%esi, %xmm1
 	lea	(%rdi, %rdx), %rsi

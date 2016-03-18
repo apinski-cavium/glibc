@@ -95,6 +95,9 @@ __libc_ifunc_impl_list (const char *name, struct libc_ifunc_impl *array,
 	      IFUNC_IMPL_ADD (array, i, __memset_chk,
 			      HAS_ARCH_FEATURE (AVX2_Usable),
 			      __memset_chk_avx2)
+	      IFUNC_IMPL_ADD (array, i, __memset_chk,
+			      HAS_ARCH_FEATURE (AVX2_Usable),
+			      __memset_chk_avx2_erms)
 #ifdef HAVE_AVX512_ASM_SUPPORT
 	      IFUNC_IMPL_ADD (array, i, __memset_chk,
 			      HAS_ARCH_FEATURE (AVX512F_Usable),
@@ -110,6 +113,9 @@ __libc_ifunc_impl_list (const char *name, struct libc_ifunc_impl *array,
 	      IFUNC_IMPL_ADD (array, i, memset,
 			      HAS_ARCH_FEATURE (AVX2_Usable),
 			      __memset_avx2)
+	      IFUNC_IMPL_ADD (array, i, memset,
+			      HAS_ARCH_FEATURE (AVX2_Usable),
+			      __memset_avx2_erms)
 #ifdef HAVE_AVX512_ASM_SUPPORT
 	      IFUNC_IMPL_ADD (array, i, memset,
 			      HAS_ARCH_FEATURE (AVX512F_Usable),
