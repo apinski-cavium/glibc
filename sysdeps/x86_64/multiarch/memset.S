@@ -29,10 +29,18 @@ ENTRY(memset)
 	leaq	__memset_erms(%rip), %rax
 	HAS_ARCH_FEATURE (Fast_ERMS)
 	jnz	2f
+	leaq	__memset_sse2_erms(%rip), %rax
+	HAS_ARCH_FEATURE (Hybrid_ERMS)
+	jnz	1f
 	leaq	__memset_sse2(%rip), %rax
+1:
 	HAS_ARCH_FEATURE (AVX2_Usable)
 	jz	2f
+	leaq	__memset_avx2_erms(%rip), %rax
+	HAS_ARCH_FEATURE (Hybrid_ERMS)
+	jnz	L(AVX512F)
 	leaq	__memset_avx2(%rip), %rax
+L(AVX512F):
 #ifdef HAVE_AVX512_ASM_SUPPORT
 	HAS_ARCH_FEATURE (AVX512F_Usable)
 	jz	2f
