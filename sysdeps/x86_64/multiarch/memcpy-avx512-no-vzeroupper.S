@@ -27,8 +27,8 @@
 #ifndef MEMCPY
 # define MEMCPY		__memcpy_avx512_no_vzeroupper
 # define MEMCPY_CHK	__memcpy_chk_avx512_no_vzeroupper
-# define MEMPCPY	__mempcpy_avx512_no_vzeroupper_1
-# define MEMPCPY_CHK	__mempcpy_chk_avx512_no_vzeroupper_1
+# define MEMPCPY	__mempcpy_avx512_no_vzeroupper
+# define MEMPCPY_CHK	__mempcpy_chk_avx512_no_vzeroupper
 #endif
 
 	.section .text.avx512,"ax",@progbits
@@ -39,12 +39,8 @@ ENTRY (MEMPCPY_CHK)
 END (MEMPCPY_CHK)
 
 ENTRY (MEMPCPY)
-#if 0
-	lea	(%rdi, %rdx), %rax
-#else
 	mov	%rdi, %rax
 	add	%rdx, %rax
-#endif
 	jmp	L(start)
 END (MEMPCPY)
 #endif

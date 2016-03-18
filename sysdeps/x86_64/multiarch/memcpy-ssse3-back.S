@@ -29,8 +29,8 @@
 #ifndef MEMCPY
 # define MEMCPY		__memcpy_ssse3_back
 # define MEMCPY_CHK	__memcpy_chk_ssse3_back
-# define MEMPCPY	__mempcpy_ssse3_back_1
-# define MEMPCPY_CHK	__mempcpy_chk_ssse3_back_1
+# define MEMPCPY	__mempcpy_ssse3_back
+# define MEMPCPY_CHK	__mempcpy_chk_ssse3_back
 #endif
 
 #define JMPTBL(I, B)	I - B
