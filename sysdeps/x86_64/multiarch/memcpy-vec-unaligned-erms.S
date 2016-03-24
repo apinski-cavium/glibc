@@ -207,13 +207,18 @@ L(loop):
 	ret
 L(less_vec):
 	/* Less than 1 VEC.  */
-# if VEC_SIZE != 16 && VEC_SIZE != 32
+# if VEC_SIZE != 16 && VEC_SIZE != 32 && VEC_SIZE != 64
 #  error Unsupported VEC_SIZE!
+# endif
+# if VEC_SIZE > 32
+	cmpb	$32, %dl
+	je	L(last_32)
+	ja	L(between_33_63)
 # endif
 # if VEC_SIZE > 16
 	cmpb	$16, %dl
 	je	L(last_16)
-	ja	L(between_15_31)
+	ja	L(between_17_31)
 # endif
 	cmpb	$8, %dl
 	je	L(last_8)
@@ -236,8 +241,22 @@ L(between_0_1):
 	movb	%cl, (%rdi)
 1:
 	ret
+# if VEC_SIZE > 32
+L(between_33_63):
+	vmovdqu	(%rsi), %ymm0
+	vmovdqu	-32(%rsi,%rdx), %ymm1
+	vmovdqu	%ymm0, (%rdi)
+	vmovdqu	%ymm1, -32(%rdi,%rdx)
+	VZEROUPPER
+	ret
+L(last_32):
+	vmovdqu	(%rsi), %ymm0
+	vmovdqu	%ymm0, (%rdi)
+	VZEROUPPER
+	ret
+# endif
 # if VEC_SIZE > 16
-L(between_15_31):
+L(between_17_31):
 	vmovdqu	(%rsi), %xmm0
 	vmovdqu	-16(%rsi,%rdx), %xmm1
 	vmovdqu	%xmm0, (%rdi)
